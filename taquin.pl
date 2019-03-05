@@ -11,14 +11,16 @@
    %********************
    % ETAT INITIAL DU JEU
    %********************   
-/*
+
 initial_state([ [a, b, c],
                 [g, h, d],
                 [vide,f,e] ]). % h=2, f*=2
-*/
+
+/*
 initial_state([ [b, h, c],     % EXEMPLE
                 [a, f, d],     % DU COURS
                 [g,vide,e] ]). % h=5 = f* = 5actions
+*/
 /*
 initial_state([ [b, c, d],
                 [a,vide,g],
@@ -132,9 +134,10 @@ matrice_difference([L1|R1],[L2|R2],Resu) :- ligne_difference(L1,L2,Resu_L), matr
 ligne_difference([],[],0).
 ligne_difference([E1|R1],[E2|R2],Resu) :- element_difference(E1,E2,Resu_E), ligne_difference(R1,R2,Resu_L), Resu is Resu_E+Resu_L.
 
+element_difference(vide,_E2,0).
 element_difference(E,E,0).
 element_difference(E1,E2,1) :- E1 \= E2.
-element_difference(vide,_E2,1).
+
 
    
    %****************
