@@ -123,9 +123,19 @@ heuristique(U,H) :-
    % Calcul du nombre de pieces mal placees dans l'etat courant U
    % par rapport a l'etat final F
 
-    heuristique1(U, H) :- true.     %********
-                                    % A FAIRE
-                                    %********
+    heuristique1(U, H) :- final_state(F), matrice_difference(U,F,H).
+
+% matrice_difference(+M1,+M2,?Resu)
+matrice_difference([],[],0).
+matrice_difference([L1|R1],[L2|R2],Resu) :- ligne_difference(L1,L2,Resu_L), matrice_difference(R1,R2,Resu_M), Resu is Resu_L+Resu_M.
+
+ligne_difference([],[],0).
+ligne_difference([E1|R1],[E2|R2],Resu) :- element_difference(E1,E2,Resu_E), ligne_difference(R1,R2,Resu_L), Resu is Resu_E+Resu_L.
+
+element_difference(E,E,0).
+element_difference(E1,E2,1) :- E1 \= E2.
+element_difference(vide,_E2,1).
+
    
    %****************
    %HEURISTIQUE no 2
