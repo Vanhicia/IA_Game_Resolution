@@ -136,7 +136,7 @@ ligne_difference([E1|R1],[E2|R2],Resu) :- element_difference(E1,E2,Resu_E), lign
 
 element_difference(vide,_E2,0).
 element_difference(E,E,0).
-element_difference(E1,E2,1) :- E1 \= E2.
+element_difference(E1,E2,1) :- E1 \= E2, E1 \= vide.
 
 
    
