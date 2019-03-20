@@ -61,7 +61,7 @@ main :-
 
 %*******************************************************************************
 
-aetoile([], [], _) :- false. %print("PAS de SOLUTION L ETAT FINAL N EST PAS ATTEIGNABLE!")
+aetoile(nil, nil, _) :- false. %print("PAS de SOLUTION L ETAT FINAL N EST PAS ATTEIGNABLE!")
 aetoile(Pf,_,_) :- suppress_min([ [_,_,_], S0 ], Pf, _), final_state(S0). % état bien placé au départ
 aetoile(Pf, Pu, Q) :- suppress_min([ [F0,H0,G0], S0], Pf, NPf), 
 					  suppress([S0, [F0,H0,G0], _, _], Pu, NPu),	
@@ -76,28 +76,49 @@ expand(G0, S0, Pu, Pf, Q, NPf, NPu) :-
 			Gs is G0+Cost, 
 			Fs is Hs + Gs),
 			List_next),
-		loop_successors1(List_next, Pf, Pu, Q, NPf, NPu).
+		put_flat(Pf),
+		put_flat(Pu),
+		loop_successors1(List_next, Pf, Pu, Q, NPf, NPu),
+		put_flat(NPf),
+		put_flat(NPu).
 
 
-loop_successors1([],_,_,_,_,_) :- false.
-loop_successors1([S|L], Pf, Pu, Q, NPf, NPu) :- loop_successors(S, Pf, Pu, Q, NPf, NPu), loop_successors1(L, Pf, Pu, Q, NPf, NPu).
+loop_successors1([],Pf,Pu,_,Pf,Pu).
+loop_successors1([S|L], Pf, Pu, Q, NPf, NPu) :- loop_successors(S, Pf, Pu, Q, NPf1, NPu1), loop_successors1(L, NPf1, NPu1, Q, NPf, NPu).
 
 
-loop_successors(S, _Pf, _Pu, Q, _NPf2, _NPu2) :- belongs(S,Q).
+loop_successors([S, _,_,_], Pf, Pu, Q, Pf, Pu) :- belongs([S,_,_,_],Q).
 
-loop_successors([S, [Fs,Hs,Gs],S0,A], Pf, Pu, _Q, NPf2, NPu2) :- belongs([S, [Fs,Hs,Gs],S0,A],Pu), 
+loop_successors([S, [Fs,Hs,Gs],S0,A], Pf, Pu, _Q, NPf2, NPu2) :- belongs([S, [_,_,_],_,_],Pu), 
 	suppress([[F1,H1,G1], S], Pf, NPf), 
-	Fs < F1, 
 	suppress([S, [F1,H1,G1],_,_], Pu, NPu), 
+	[Fs,Hs,Gs] @< [F1,H1,G1], 
 	insert([[Fs,Hs,Gs], S], NPf, NPf2), 
 	insert([S, [Fs,Hs,Gs],S0,A], NPu, NPu2).
  
+loop_successors([S, _,_,_], Pf, Pu, _Q, Pf, Pu) :- belongs([S, [_,_,_],_,_],Pu).
+%	[Fs,Hs,Gs] @> [F1,H1,G1], 
+
 loop_successors([S, [Fs,Hs,Gs],S0,A], Pf, Pu, _Q, NPf, NPu) :-  
 	insert([S, [Fs,Hs,Gs],S0,A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
+affiche_solution([First|Q], EF) :-
+	writeln("----------------------------------"),
+	writeln("------------Initial state---------"),
+	writeln("----------------------------------"), 
+	write(First),
+	writeln("----------------------------------"),
+	writeln("----------------Step--------------"),
+	writeln("----------------------------------"),
+	mem_states(Q, EF),
+	writestep(First, Q, EF),
 
 
+writestep(_,[]). 
+writestep(S0,[[U,L,S0, A]|Q]) :- write(U), write("------->"), write(A), writestep(S0, Q).
+
+mem_states(Q,[U,L,S0,A], Mem) :- append( ,Mem).
 
 
 	
