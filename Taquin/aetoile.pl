@@ -65,26 +65,35 @@ aetoile([], [], _) :- false. %print("PAS de SOLUTION L ETAT FINAL N EST PAS ATTE
 aetoile(Pf,_,_) :- suppress_min([ [_,_,_], S0 ], Pf, _), final_state(S0). % état bien placé au départ
 aetoile(Pf, Pu, Q) :- suppress_min([ [F0,H0,G0], S0], Pf, NPf), 
 					  suppress([S0, [F0,H0,G0], _, _], Pu, NPu),	
-					  rule(_,Cost, S0, S),
-					  expand(Fs, Hs, Gs, G0, Cost, S),
-					  loop_successors(S, Pf, Pu, Q, Fs, Hs, Gs, NPf, NPu),
+					  expand(G0, S0, Pu, Pf, Q, NPf, NPu),
 					  insert([S0, [F0,H0,G0], _,_], Q,NQ),
 					  aetoile(NPf, NPu, NQ).
 
+expand(G0, S0, Pu, Pf, Q, NPf, NPu) :- 
+		findall([S, [Fs,Hs,Gs],S0,A],  
+			(rule(A,Cost, S0, S), 
+			heuristique(S, Hs), 
+			Gs is G0+Cost, 
+			Fs is Hs + Gs),
+			List_next),
+		loop_successors1(List_next, Pf, Pu, Q, NPf, NPu).
 
-expand(Fs, Hs, Gs, G0, Cost, S0) :- heuristique(S0, Hs), Gs is G0+Cost, Fs is Hs + Gs.
 
-loop_successors(S, _Pf, _Pu, Q, _G, _NPf2, _NPu2) :- belongs([S, [_,_,_],_,_],Q).
+loop_successors1([],_,_,_,_,_) :- false.
+loop_successors1([S|L], Pf, Pu, Q, NPf, NPu) :- loop_successors(S, Pf, Pu, Q, NPf, NPu), loop_successors1(L, Pf, Pu, Q, NPf, NPu).
 
-loop_successors(S, Pf, Pu, _Q, Fs, Hs, Gs, NPf2, NPu2) :- belongs([S, [_,_,_],_,_],Pu), 
+
+loop_successors(S, _Pf, _Pu, Q, _NPf2, _NPu2) :- belongs(S,Q).
+
+loop_successors([S, [Fs,Hs,Gs],S0,A], Pf, Pu, _Q, NPf2, NPu2) :- belongs([S, [Fs,Hs,Gs],S0,A],Pu), 
 	suppress([[F1,H1,G1], S], Pf, NPf), 
 	Fs < F1, 
 	suppress([S, [F1,H1,G1],_,_], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], NPf, NPf2), 
-	insert([S,[Fs,Hs,Gs],_,_], NPu, NPu2).
+	insert([S, [Fs,Hs,Gs],S0,A], NPu, NPu2).
  
-loop_successors(S, Pf, Pu, _Q, Fs, Hs, Gs, NPf, NPu) :-  
-	insert([S, [Fs,Hs,Gs],_,_], Pu, NPu), 
+loop_successors([S, [Fs,Hs,Gs],S0,A], Pf, Pu, _Q, NPf, NPu) :-  
+	insert([S, [Fs,Hs,Gs],S0,A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
 
