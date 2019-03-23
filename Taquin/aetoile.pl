@@ -103,8 +103,22 @@ loop_successors([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf, NPu) :-
 	insert([S, [Fs,Hs,Gs],U, A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
+affiche_solution([First|Q], EF) :-
+	writeln("----------------------------------"),
+	writeln("------------Initial state---------"),
+	writeln("----------------------------------"), 
+	write(First),
+	writeln("----------------------------------"),
+	writeln("----------------Step--------------"),
+	writeln("----------------------------------"),
+	mem_states(Q, EF),
+	writestep(First, Q, EF),
 
 
+writestep(_,[]). 
+writestep(S0,[[U,L,S0, A]|Q]) :- write(U), write("------->"), write(A), writestep(S0, Q).
+
+%mem_states(Q,[U,L,S0,A], Mem) :- append( ,Mem).
 
 
 	
