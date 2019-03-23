@@ -4,7 +4,7 @@
 
 %***************************
 % INSA TOULOUSE - P.ESQUIROL
-% mars 2015
+% mars 2017
 %***************************
 
 %*************************
@@ -26,16 +26,17 @@
 %***********************************************
 % PREDICATS EXPORTES ET COMPLEXITE ALGORITHMIQUE
 %***********************************************
-% soit N = nombre de noeuds de l'arbre
-
-% height(+Avl, ?Height)             O(1)
-% put_flat(+Avl)                    O(N)
-% put_90(+Avl)                      O(N)
-% belongs(+Elem, +Avl)              O(log N)
+% soit N = nombre de noeuds de l'arbre				%   UTILITE POUR A*
+%													%   ----------------													
+% empty(?Avl)						O(1)			%<<< initialisation de P et Q
+% height(+Avl, ?Height)             O(1)			
+% put_flat(+Avl)                    O(N)			
+% put_90(+Avl)                      O(N)			
+% belongs(+Elem, +Avl)              O(log N)		%<<< appartenance d'un noeud à Q
 % subtree(+Elem, +Avl, Ss_Avl)      O(log N)
-% insert(+Elem, +Avant, ?Apres)     O(log N)
-% suppress(+Elem,+Avant,?Apres)     O(log N)
-% suppress_min(?Min,+Avant,?Apres)  O(log N)
+% insert(+Elem, +Avant, ?Apres)     O(log N)		%<<< insertion d'un nouveau noeud dans P ou dans Q
+% suppress(+Elem,+Avant,?Apres)     O(log N)		%<<< mise  à jour <=> suppression puis insertion
+% suppress_min(?Min,+Avant,?Apres)  O(log N)		%<<< supression du noeud minimal
 % suppress_max(?Max,+Avant,?Apres)  O(log N)
 
 %****************************
@@ -159,11 +160,11 @@ left_rotate(avl(G,R,D,_), A_Apres) :-
 	% Insertion equilibree dans un avl
 	%---------------------------------
 	% On suppose que l'arbre avant insertion est equilibré (difference de hauteur
-	% entre les ss-arbres gauche et droite de 1)
+	% entre les ss-arbres gauche et droite de 1 au maximum)
 	% L'insertion doit assurer qu'apres insertion l'arbre est toujours equilibre
 	% sinon les rotations necessaires sont effectuees.
 
-	% On suppose que les noeux contiennent des informations que l'on peut comparer
+	% On suppose que les noeuds contiennent des informations que l'on peut comparer
 	% a l'aide d'une relation d'ordre lexicographique (la cle c'est l'info elle-meme)
 	% En prolog, c'est la relation '@<'
 	% On peut comparer par exemple des integer, des string, des constantes,
@@ -174,7 +175,7 @@ insert(Elem, nil, avl(nil,Elem,nil,0)).
 insert(Elem, AVL, NEW_AVL) :-
 	AVL = avl(Gauche,Racine,Droite,_Hauteur),
 	(Elem = Racine ->
-			% l'élément est déjà présent, pas d'insertion possible
+			% l'élément est déjà present, pas d'insertion possible
 		fail
 	;
 		(Elem @< Racine ->
@@ -355,8 +356,12 @@ avl_test(8, avl(G,5,D,2)) :-
 avl_test(9, avl(G,3,D,2)) :-
 	G = avl(nil,1,nil,0),
 	avl_test(4,D).
+	
+/* Test uniquement valable avec ECLiPSe
+
 avl_test(10, Final) :-
    empty(Init),
    (for(I,1,20), fromto(Init,In,Out,Final) do
      insert(I,In,Out)
    ).
+*/
