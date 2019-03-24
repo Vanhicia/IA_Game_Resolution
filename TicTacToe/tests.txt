@@ -12,3 +12,14 @@ M = [[a,b,c], [d,e,f], [g,h,i]], alignement(Ali, M). %retourne 8 solutions
 A=[_,_,_], possible(A,x). %retourne vrai
 A=[x,_,x], possible(A,x). %retourne vrai
 A=[_,o,x], possible(A,x). %retourne faux
+
+%% Tests alignement_gagnant
+A=[x,x,x], alignement_gagnant(A,x). %retourne vrai
+A=[x,o,x], alignement_gagnant(A,x). %retourne faux
+
+%% Tests alignement_gagnant
+A=[o,o,o], alignement_perdant(A,x). %retourne vrai
+A=[x,o,x], alignement_perdant(A,x). %retourne faux
+
+% Test successeur
+M=[[o,x,x],[o,_,_],[_,_,_]], successeur(x,M,[3,1]).

@@ -61,7 +61,7 @@ alignement(D, Matrix) :- diagonale(D,Matrix).
 	
 ligne(L, M) :-  member(L, M).
  
-colonne([E|C],[L|M]) :- colonne(C,M,_Pos).
+colonne(C,M) :- colonne(C,M,_Pos).
 
 colonne([],[],_Pos).
 colonne([E|C],[L|M], Pos) :- nth1(Pos,L,E), colonne(C,M,Pos).
@@ -115,7 +115,7 @@ possible([   ], _).
 	faut pas realiser l'unification.
 	*/
 
-unifiable(E,J) :- var(E), !.
+unifiable(E,_J) :- var(E), !.
 unifiable(J,J).
 
 	
@@ -131,23 +131,20 @@ Un alignement perdant pour J est gagnant
 pour son adversaire.
 	*/
 
-% A FAIRE
+alignement_gagnant(Ali, J) :- ground(Ali), possible(Ali, J).
 
-% alignement_gagnant(Ali, J) :- ? ? ? ?
-
-% alignement_perdant(Ali, J) :- ? ? ? ?
+alignement_perdant(Ali, J) :- ground(Ali), adversaire(J, Adv), possible(Ali, Adv).
 
 
 	/******************************
 	DEFINITION D'UN ETAT SUCCESSEUR
 	*******************************/
 
-     /*Il faut definir quelle op�ration subitune matrice M representant la situation courante
+     /*Il faut definir quelle op�ration subit une matrice M representant la situation courante
 	lorsqu'un joueur J joue en coordonnees [L,C]
      */	
 
-% A FAIRE
-% successeur(J,Etat,[L,C]) :- ? ? ? ?  
+successeur(J,Etat,[L,C]) :- nth1(L,Etat,Lig), nth1(C, Lig, J).
 
 	/**************************************
    	 EVALUATION HEURISTIQUE D'UNE SITUATION
