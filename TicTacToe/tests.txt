@@ -1,0 +1,14 @@
+Requêtes pour tester les prédicats :
+
+%% Tests situation_terminale
+situation_terminale(o,[[o,x,x],[x,o,o],[o,x,x]]). %retourne vrai
+
+situation_terminale(x,[[o,x,x],[x,o,o],[o,x,_]]). %retourne faux
+
+%% Test alignement
+M = [[a,b,c], [d,e,f], [g,h,i]], alignement(Ali, M). %retourne 8 solutions
+
+%% Tests possible
+A=[_,_,_], possible(A,x). %retourne vrai
+A=[x,_,x], possible(A,x). %retourne vrai
+A=[_,o,x], possible(A,x). %retourne faux

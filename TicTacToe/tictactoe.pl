@@ -1,3 +1,5 @@
+:- lib(listut).
+
 	/*********************************
 	DESCRIPTION DU JEU DU TIC-TAC-TOE
 	*********************************/
@@ -40,14 +42,9 @@ adversaire(x,o).
 adversaire(o,x).
 
 
-	/****************************************************
-	 DEFINIR ICI � l'aide du pr�dicat ground/1 comment
-	 reconnaitre une situation terminale dans laquelle il
-	 n'y a aucun emplacement libre : aucun joueur ne peut
-	 continuer � jouer (quel qu'il soit).
-	 ****************************************************/
+	% Definition de la situation terminale : situation dans laquelle il n'y a aucun emplacement libre (ie aucune variable libre)
 
-% situation_terminale(_Joueur, Situation) :-   ? ? ? ? ?
+situation_terminale(_Joueur, Situation) :-  ground(Situation).
 
 /***************************
  DEFINITIONS D'UN ALIGNEMENT
@@ -62,9 +59,12 @@ alignement(D, Matrix) :- diagonale(D,Matrix).
  	 existant dans une matrice carree NxN.
 	 ********************************************/
 	
-% ligne(L, M) :-  ... ? ...
+ligne(L, M) :-  member(L, M).
  
-% colonne(C,M) :- ? ? ? ?
+colonne([E|C],[L|M]) :- colonne(C,M,_Pos).
+
+colonne([],[],_Pos).
+colonne([E|C],[L|M], Pos) :- nth1(Pos,L,E), colonne(C,M,Pos).
 
 	/* D�finition de la relation liant une diagonale D � la matrice M dans laquelle elle se trouve.
 		il y en a 2 sortes de diagonales dans une matrice carree(https://fr.wikipedia.org/wiki/Diagonale) :
@@ -82,7 +82,9 @@ alignement(D, Matrix) :- diagonale(D,Matrix).
 	*/
 		
 diagonale(D, M) :- premiere_diag(1,D,M).
-% ??? 2eme clause A COMPLETER 
+diagonale(D, M) :- length(M,K), seconde_diag(K,D,M).
+
+% definition de la premiere diagonale
 
 premiere_diag(_,[],[]).
 premiere_diag(K,[E|D],[Ligne|M]) :-
@@ -90,8 +92,13 @@ premiere_diag(K,[E|D],[Ligne|M]) :-
 	K1 is K+1,
 	premiere_diag(K1,D,M).
 
-% definition de la seconde diagonale A COMPLETER
-% seconde_diag(K,M,D) :- ???
+% definition de la seconde diagonale
+
+seconde_diag(_,[],[]).
+seconde_diag(K,[E|D],[L|M]) :-
+	nth1(K,L,E),
+	K1 is K-1,
+	seconde_diag(K1,D,M).
 
 
 	/***********************************
@@ -108,8 +115,9 @@ possible([   ], _).
 	faut pas realiser l'unification.
 	*/
 
-% A FAIRE 
-% unifiable(X,J) :- ? ? ? ? ?
+unifiable(E,J) :- var(E), !.
+unifiable(J,J).
+
 	
 	/**********************************
 	 DEFINITION D'UN ALIGNEMENT GAGNANT
