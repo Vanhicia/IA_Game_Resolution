@@ -174,8 +174,18 @@ heuristique(J,Situation,H) :-		% cas 2
 % on ne vient ici que si les cut precedents n'ont pas fonctionne,
 % c-a-d si Situation n'est ni perdante ni gagnante.
 
-% A FAIRE 					cas 3
-% heuristique(J,Situation,H) :- ? ? ? ?
+					
+heuristique(J,Situation,H) :- 		% cas 3
+	% trouver et compter le nombre d'alignements possibles pour le joueur J
+	findall(Ali, (alignement(Ali, Situation), possible(Ali,J)), List_Ali),
+	length(List_Ali, Nb_Ali),
+	% trouver et compter le nombre d'alignements possibles pour l'adversaire du joueur J
+	adversaire(J,Adv),
+	findall(Ali_Adv, (alignement(Ali_Adv, Situation),possible(Ali_Adv,Adv)), List_Ali_Adv),
+	length(List_Ali_Adv, Nb_Ali_Adv),
+	% faire la différence de ces 2 nombres
+	H is Nb_Ali - Nb_Ali_Adv.
+
 
 
 
