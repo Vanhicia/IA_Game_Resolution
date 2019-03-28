@@ -33,7 +33,7 @@ initial_state([ [f, g, a],
 initial_state([ [e, f, g],
                 [d,vide,h],
                 [c, b, a]  ]). % h=24, f*=30 
-*/  
+*/
 
    %******************
    % ETAT FINAL DU JEU
