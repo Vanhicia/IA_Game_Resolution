@@ -91,19 +91,19 @@ expand(Gu, U, Pu, Pf, Q, NPf, NPu) :-
 		    Gs is Gu+Cost, 
 		    Fs is Hs + Gs),
 		    List_next),
-	loop_successors1(List_next, Pf, Pu, Q, NPf, NPu).
+	loop_successors(List_next, Pf, Pu, Q, NPf, NPu).
 
 
-loop_successors1([],Pf,Pu,_,Pf,Pu).
-loop_successors1([S|L], Pf, Pu, Q, NPf, NPu) :- 
-	loop_successors(S, Pf, Pu, Q, NPf1, NPu1), 
-	loop_successors1(L, NPf1, NPu1, Q, NPf, NPu).
+loop_successors([],Pf,Pu,_,Pf,Pu).
+loop_successors([S|L], Pf, Pu, Q, NPf, NPu) :- 
+	treat_one_successor(S, Pf, Pu, Q, NPf1, NPu1), 
+	loop_successors(L, NPf1, NPu1, Q, NPf, NPu).
 
 
-loop_successors([S,_,_,_], Pf, Pu, Q, Pf, Pu) :- 
+treat_one_successor([S,_,_,_], Pf, Pu, Q, Pf, Pu) :- 
 	belongs([S,_,_,_],Q).
 
-loop_successors([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf2, NPu2) :- 
+treat_one_successor([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf2, NPu2) :- 
 	belongs([S,[_,_,_],_,_],Pu), 
 	suppress([[F1,H1,G1], S], Pf, NPf), 
 	suppress([S, [F1,H1,G1],_,_], Pu, NPu), 
@@ -111,11 +111,11 @@ loop_successors([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf2, NPu2) :-
 	insert([[Fs,Hs,Gs], S], NPf, NPf2), 
 	insert([S, [Fs,Hs,Gs], U, A], NPu, NPu2).
  
-loop_successors([S,_,_,_], Pf, Pu, _Q, Pf, Pu) :- 
+treat_one_successor([S,_,_,_], Pf, Pu, _Q, Pf, Pu) :- 
 	belongs([S, [_,_,_],_,_],Pu).
 %	[Fs,Hs,Gs] @> [F1,H1,G1], 
 
-loop_successors([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf, NPu) :-  
+treat_one_successor([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf, NPu) :-  
 	insert([S, [Fs,Hs,Gs],U, A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
