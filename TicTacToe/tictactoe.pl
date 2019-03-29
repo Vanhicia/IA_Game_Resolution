@@ -95,8 +95,8 @@ premiere_diag(K,[E|D],[Ligne|M]) :-
 % definition de la seconde diagonale
 
 seconde_diag(_,[],[]).
-seconde_diag(K,[E|D],[L|M]) :-
-	nth1(K,L,E),
+seconde_diag(K,[E|D],[Ligne|M]) :-
+	nth1(K,Ligne,E),
 	K1 is K-1,
 	seconde_diag(K1,D,M).
 
