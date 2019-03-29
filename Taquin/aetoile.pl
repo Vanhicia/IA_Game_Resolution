@@ -80,17 +80,17 @@ aetoile(Pf, Pu, Q) :-
 	suppress([U, [F,H,G], Pere, Action], Pu, NPu),
 	expand(G, U, NPu, NPf, Q, NPf2, NPu2),
 	insert([U, [F,H,G], Pere, Action], Q, NQ),
-	aetoile(NPf2, NPu2, NQ).
+	aetoile(NPf2, NPu2, NQ),!.
 
 % on cherche tous les noeuds contenant un état successeur S de la situation U
 % et on traite chaque noeud grâce à loop_successor
 expand(Gu, U, Pu, Pf, Q, NPf, NPu) :- 
-	findall([S, [Fs,Hs,Gs], U, A],  
-		(rule(A,Cost, U, S), 
-		heuristique(S, Hs), 
-		Gs is Gu+Cost, 
-		Fs is Hs + Gs),
-		List_next),
+	findall([S, [Fs,Hs,Gs], U, A], 
+		    (rule(A,Cost, U, S), 
+		    heuristique(S, Hs), 
+		    Gs is Gu+Cost, 
+		    Fs is Hs + Gs),
+		    List_next),
 	loop_successors1(List_next, Pf, Pu, Q, NPf, NPu).
 
 
@@ -119,11 +119,14 @@ loop_successors([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf, NPu) :-
 	insert([S, [Fs,Hs,Gs],U, A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
-affiche_solution(_Q, [U,L,Pere,Action]) :- initial_state(U), print_step([U,L,Pere,Action]).
+
 affiche_solution(Q, [U,L,Pere,Action]) :-
 	belongs([Pere,L2,Pere2,Action2],Q),
 	affiche_solution(Q, [Pere,L2,Pere2,Action2]),
 	print_step([U,L,Pere,Action]).
+affiche_solution(_Q, [U,L,Pere,Action]) :- 
+    initial_state(U), 
+    print_step([U,L,Pere,Action]).
 
 print_step([U,[F,H,G],_Pere,A]) :-
 	write("F = "),
