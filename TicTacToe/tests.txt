@@ -47,3 +47,15 @@ situation_initiale(M), successeurs(X,M,Succ).
 
 
 
+
+% repondre aux questions des sujets
+
+fournir le code
+et utiliser le code pour faire des tests
+ > taquin 3x3, 4x4...)
+ > expliquer l'heuristique avec la SI et la SF
+ > "vendre notre code"
+ > dimanche semaine prochaine (07/04) par mail à : esquirol@insa-toulouse.fr et rbailonr@laas.fr
+
+
+col(C,M) :- maplist(nth1(N), M, C).

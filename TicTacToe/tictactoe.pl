@@ -61,11 +61,12 @@ alignement(D, Matrix) :- diagonale(D,Matrix).
 	
 ligne(L, M) :-  member(L, M).
  
-colonne(C,M) :- colonne(C,M,_Pos).
+colonne(C,M) :- maplist(nth1(_N), M, C).
 
+/*colonne(C,M,_Pos).
 colonne([],[],_Pos).
 colonne([E|C],[L|M], Pos) :- nth1(Pos,L,E), colonne(C,M,Pos).
-
+*/
 	/* D�finition de la relation liant une diagonale D � la matrice M dans laquelle elle se trouve.
 		il y en a 2 sortes de diagonales dans une matrice carree(https://fr.wikipedia.org/wiki/Diagonale) :
 		- la premiere diagonale (principale) (descendante) : (A I)
@@ -116,8 +117,7 @@ possible([   ], _).
 	*/
 
 unifiable(E,_J) :- var(E), !.
-unifiable(J,J).
-
+unifiable(E,J) :- ground(E), E==J.
 	
 	/**********************************
 	 DEFINITION D'UN ALIGNEMENT GAGNANT

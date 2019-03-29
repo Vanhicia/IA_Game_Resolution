@@ -59,7 +59,8 @@ A FAIRE : ECRIRE ici les clauses de negamax/5
 
 
 negamax(J, Etat, P, P, [nil, H]) :- heuristique(J,Etat,H), !. /* Cas 1 */
-negamax(J, Etat, _P, _Pmax, [nil, H]) :- situation_terminale(J, Etat), heuristique(J,Etat,H). /* Cas 2 */
+negamax(J, Etat, _P, _Pmax, [_C, H]) :- heuristique(J,Etat,H), alignement_gagnant(Etat), !.
+negamax(J, Etat, _P, _Pmax, [nil, H]) :- situation_terminale(J, Etat), heuristique(J,Etat,H), !. /* Cas 2 */
 negamax(J, Etat, P, Pmax, [Coup, V2]) :-  successeurs(J,Etat, Succ), loop_negamax(J,P,Pmax,Succ, Liste_Couples), meilleur(Liste_Couples, [Coup, V1]), V2 is (-V1). /* Cas 3 */
 
 
@@ -124,20 +125,42 @@ A FAIRE : commenter chaque litteral de la 2eme clause de loop_negamax/5,
 
 A FAIRE : ECRIRE ici les clauses de meilleur/2
 	*/
-meilleur([],_):- false.
-meilleur([[C,V]],[C,V]) :- !. 
-meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- meilleur(Liste_de_Couples, [_CY,VY]), VX < VY.
-meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):- meilleur(Liste_de_Couples, [CY,VY]), VX > VY.
+meilleur([[C,V]],[C,V]):- !. 
+meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- meilleur(Liste_de_Couples, [_CY,VY]), VX < VY, !.
+meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):- meilleur(Liste_de_Couples, [CY,VY]), VX >= VY.
 
 
 	/******************
   	PROGRAMME PRINCIPAL
   	*******************/
+situation_test1([ [_,_,_],
+                  [_,x,_],
+                  [_,_,_] ]).
+
+situation_test2([ [o,_,_],
+                  [_,x,_],
+                  [_,_,_] ]).
+
+situation_test3([ [o,o,_],
+                  [_,x,_],
+                  [_,x,_] ]).
+
+situation_test4([ [o,o,x],
+                  [_,x,x],
+                  [_,x,o] ]).
+
+situation_test5([ [o,o,x],
+                  [x,x,o],
+                  [o,o,x] ]).
 
 main(Coup,V, Pmax) :- % main(B,V, Pmax)
 	situation_initiale(Etat), 
 	joueur_initial(J),
-	negamax(J, Etat, 0, Pmax, [Coup, V]).       
+	negamax(J, Etat, 0, Pmax, [Coup, V]).    
+
+test(Etat, Coup, V, Pmax) :-
+	joueur_initial(J),
+	negamax(J, Etat, 0, Pmax, [Coup, V]).    % à modifier !! Le joueur n'est pas toujours J
 
 
 	/*
