@@ -133,8 +133,7 @@ pour son adversaire.
 
 alignement_gagnant(Ali, J) :- ground(Ali), possible(Ali, J).
 
-alignement_perdant(Ali, J) :- ground(Ali), adversaire(J, Adv), possible(Ali, Adv).
-% alignement_perdant(Ali, J) :- adversaire(J, O), alignement_gagnant(Ali, O).
+alignement_perdant(Ali, J) :- adversaire(J, O), alignement_gagnant(Ali, O).
 
 	/******************************
 	DEFINITION D'UN ETAT SUCCESSEUR

@@ -58,6 +58,12 @@ A FAIRE : ECRIRE ici les clauses de negamax/5
 	*/
 
 
+negamax(J, Etat, P, P, [nil, H]) :- heuristique(J,Etat,H), !. /* Cas 1 */
+negamax(J, Etat, _P, _Pmax, [nil, H]) :- situation_terminale(J, Etat), heuristique(J,Etat,H). /* Cas 2 */
+negamax(J, Etat, P, Pmax, [Coup, V2]) :-  successeurs(J,Etat, Succ), loop_negamax(J,P,Pmax,Succ, Liste_Couples), meilleur(Liste_Couples, [Coup, V1]), V2 is (-V1). /* Cas 3 */
+
+
+
 	/*******************************************
 	 DEVELOPPEMENT D'UNE SITUATION NON TERMINALE
 	 successeurs/3 
@@ -88,11 +94,11 @@ successeurs(J,Etat,Succ) :-
 	*/
 
 loop_negamax(_,_, _  ,[],                []).
-loop_negamax(J,P,Pmax,[[Coup,Suiv]|Succ],[[Coup,Vsuiv]|Reste_Couples]) :-
-	loop_negamax(J,P,Pmax,Succ,Reste_Couples),
-	adversaire(J,A),
-	Pnew is P+1,
-	negamax(A,Suiv,Pnew,Pmax, [_,Vsuiv]).
+loop_negamax(J,P,Pmax,[[Coup,Suiv]|Succ],[[Coup,Vsuiv]|Reste_Couples]) :- 
+	loop_negamax(J,P,Pmax,Succ,Reste_Couples),  %On continue à chercher les coups possibles (même profondeur) 
+	adversaire(J,A), %On recupère l'adversaire
+	Pnew is P+1, % On incrémente la profondeur, le nombre de tours.
+	negamax(A,Suiv,Pnew,Pmax, [_,Vsuiv]). % On développe la branche du coup à partir de la valeur Vsuiv.  
 
 	/*
 
@@ -118,16 +124,20 @@ A FAIRE : commenter chaque litteral de la 2eme clause de loop_negamax/5,
 
 A FAIRE : ECRIRE ici les clauses de meilleur/2
 	*/
-
+meilleur([],_):- false.
+meilleur([[C,V]],[C,V]) :- !. 
+meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- meilleur(Liste_de_Couples, [_CY,VY]), VX < VY.
+meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):- meilleur(Liste_de_Couples, [CY,VY]), VX > VY.
 
 
 	/******************
   	PROGRAMME PRINCIPAL
   	*******************/
 
-main(B,V, Pmax) :-
-
-	true.        
+main(Coup,V, Pmax) :- % main(B,V, Pmax)
+	situation_initiale(Etat), 
+	joueur_initial(J),
+	negamax(J, Etat, 0, Pmax, [Coup, V]).       
 
 
 	/*

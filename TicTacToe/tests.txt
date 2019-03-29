@@ -30,3 +30,20 @@ M=[[x,o,x],[o,_,o],[x,o,x]], heuristique(x,M,H). %H=0
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(x,M,H). %H=2
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(o,M,H). %H=-2
 
+------
+
+
+%%2. Développement de l’algorithme Negamax
+%% Quelprédicatpermet de connaître sous forme de liste l’ensemble des couples[Coord, Situation_Resultante]tels que chaque élément (couple) associe le coup d’un joueur et la situation qui en résulte à partir d’une situation donnée.
+
+successeurs(J,Etat,Succ) :-
+	copy_term(Etat, Etat_Suiv),
+	findall([Coup,Etat_Suiv],
+		    successeur(J,Etat_Suiv,Coup),
+		    Succ).
+
+situation_initiale(M), successeurs(X,M,Succ).
+
+
+
+
