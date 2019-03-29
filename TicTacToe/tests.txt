@@ -25,7 +25,7 @@ A=[x,o,x], alignement_perdant(A,x). %retourne faux
 M=[[o,x,x],[o,_,_],[_,_,_]], successeur(x,M,[3,1]).
 
 %% Tests heuristique
-situation_intiale(M), heuristique(x,M,H). %H=0
+situation_initiale(M), heuristique(x,M,H). %H=0
 M=[[x,o,x],[o,_,o],[x,o,x]], heuristique(x,M,H). %H=0
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(x,M,H). %H=2
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(o,M,H). %H=-2
