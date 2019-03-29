@@ -17,7 +17,7 @@ A=[_,o,x], possible(A,x). %retourne faux
 A=[x,x,x], alignement_gagnant(A,x). %retourne vrai
 A=[x,o,x], alignement_gagnant(A,x). %retourne faux
 
-%% Tests alignement_gagnant
+%% Tests alignement_perdant
 A=[o,o,o], alignement_perdant(A,x). %retourne vrai
 A=[x,o,x], alignement_perdant(A,x). %retourne faux
 
