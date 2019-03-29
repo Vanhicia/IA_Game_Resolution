@@ -119,14 +119,14 @@ treat_one_successor([S, [Fs,Hs,Gs], U, A], Pf, Pu, _Q, NPf, NPu) :-
 	insert([S, [Fs,Hs,Gs],U, A], Pu, NPu), 
 	insert([[Fs,Hs,Gs], S], Pf, NPf).
 
-
+affiche_solution(_Q, [U,L,Pere,Action]) :- 
+    initial_state(U), 
+    print_step([U,L,Pere,Action]).
 affiche_solution(Q, [U,L,Pere,Action]) :-
 	belongs([Pere,L2,Pere2,Action2],Q),
 	affiche_solution(Q, [Pere,L2,Pere2,Action2]),
 	print_step([U,L,Pere,Action]).
-affiche_solution(_Q, [U,L,Pere,Action]) :- 
-    initial_state(U), 
-    print_step([U,L,Pere,Action]).
+
 
 print_step([U,[F,H,G],_Pere,A]) :-
 	write("F = "),
