@@ -57,12 +57,32 @@ A FAIRE : ECRIRE ici les clauses de negamax/5
 .....................................
 	*/
 
+/* Cas 1 : la profondeur maximale est atteinte */
+negamax(J, Etat, P, P, [nil, H]) :- heuristique(J,Etat,H), !. 
 
-negamax(J, Etat, P, P, [nil, H]) :- heuristique(J,Etat,H), !. /* Cas 1 */
-negamax(J, Etat, _P, _Pmax, [_C, H]) :- heuristique(J,Etat,H), alignement_gagnant(Etat), !.
-negamax(J, Etat, _P, _Pmax, [nil, H]) :- situation_terminale(J, Etat), heuristique(J,Etat,H), !. /* Cas 2 */
-negamax(J, Etat, P, Pmax, [Coup, V2]) :-  successeurs(J,Etat, Succ), loop_negamax(J,P,Pmax,Succ, Liste_Couples), meilleur(Liste_Couples, [Coup, V1]), V2 is (-V1). /* Cas 3 */
+/* Cas 2 : le plateau est rempli */
+negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
+	situation_terminale(J, Etat), 
+	heuristique(J,Etat,H), !. 
 
+/* Le joueur J a gagné */
+negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
+	alignement(Alig,Etat),
+   	alignement_gagnant(Alig,J),
+	heuristique(J,Etat,H), !.
+
+/* Le joueur J a perdu */
+negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
+	alignement(Alig,Etat),
+   	alignement_perdant(Alig,J),
+	heuristique(J,Etat,H), !.
+
+/* Cas 3 : la profondeur maximale n'est pas atteinte et le joueur J peut jouer*/
+negamax(J, Etat, P, Pmax, [Coup, V2]) :-  
+	successeurs(J,Etat,Succ), 
+	loop_negamax(J,P,Pmax,Succ,Liste_Couples), 
+	meilleur(Liste_Couples,[Coup, V1]), 
+	V2 is (-V1). 
 
 
 	/*******************************************
@@ -126,8 +146,14 @@ A FAIRE : commenter chaque litteral de la 2eme clause de loop_negamax/5,
 A FAIRE : ECRIRE ici les clauses de meilleur/2
 	*/
 meilleur([[C,V]],[C,V]):- !. 
-meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- meilleur(Liste_de_Couples, [_CY,VY]), VX < VY, !.
-meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):- meilleur(Liste_de_Couples, [CY,VY]), VX >= VY.
+
+meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- 
+	meilleur(Liste_de_Couples, [_CY,VY]), 
+	VX =< VY, !.
+
+meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):- 
+	meilleur(Liste_de_Couples, [CY,VY]), 
+	VX > VY.
 
 
 	/******************
@@ -153,6 +179,16 @@ situation_test5([ [o,o,x],
                   [x,x,o],
                   [o,o,x] ]).
 
+% le joueur x a gagné
+situation_test6([ [o,o,_],
+                  [x,x,x],
+                  [_,_,_] ]).
+
+% le joueur o a gagné
+situation_test7([ [o,o,o],
+                  [x,x,_],
+                  [x,_,_] ]).
+
 main(Coup,V, Pmax) :- % main(B,V, Pmax)
 	situation_initiale(Etat), 
 	joueur_initial(J),
@@ -161,7 +197,7 @@ main(Coup,V, Pmax) :- % main(B,V, Pmax)
 test(Etat, Coup, V, Pmax) :-
 	joueur_initial(J),
 	negamax(J, Etat, 0, Pmax, [Coup, V]).    % à modifier !! Le joueur n'est pas toujours J
-
+	
 
 	/*
 A FAIRE :
