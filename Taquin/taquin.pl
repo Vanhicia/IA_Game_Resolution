@@ -38,12 +38,12 @@ initial_state5([ [e, f, g],
    %******************
    % ETAT FINAL DU JEU
    %******************
-/*  
+ /*
 final_state([[a, b,  c],
              [h,vide,d],
              [g, f,  e]]).
-
 */
+
 
 %********************
 % ETAT INITIAL DU JEU - Cas 4x4
@@ -152,6 +152,8 @@ heuristique(U,H) :-
    
    % Calcul du nombre de pieces mal placees dans l'etat courant U
    % par rapport a l'etat final F
+heuristique1(F, 0) :- 
+    final_state(F),!.
 
 heuristique1(U, H) :- 
     final_state(F), 
@@ -184,6 +186,9 @@ element_difference(E1,E2,1) :-
    
    % Somme sur l'ensemble des pieces des distances de Manhattan
    % entre la position courante de la piece et sa positon dans l'etat final
+
+heuristique2(F, 0) :- 
+    final_state(F), !.
 
 heuristique2(U, H) :- 
     final_state(F), 
