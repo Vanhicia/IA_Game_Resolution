@@ -11,37 +11,65 @@
    %********************
    % ETAT INITIAL DU JEU
    %********************   
-/*
-initial_state([ [a, b, c],
+
+initial_state1([ [a, b, c],
                 [g, h, d],
                 [vide,f,e] ]). % h=2, f*=2
-*/
 
-initial_state([ [b, h, c],     % EXEMPLE
+
+initial_state2([ [b, h, c],     % EXEMPLE
                 [a, f, d],     % DU COURS
                 [g,vide,e] ]). % h=5 = f* = 5actions
 
-/*
-initial_state([ [b, c, d],
+
+initial_state3([ [b, c, d],
                 [a,vide,g],
                 [f, h, e]  ]). % h=10 f*=10
 			
-initial_state([ [f, g, a],
+initial_state4([ [f, g, a],
                 [h,vide,b],
                 [d, c, e]  ]). % h=16, f*=20
 			
-initial_state([ [e, f, g],
+initial_state5([ [e, f, g],
                 [d,vide,h],
                 [c, b, a]  ]). % h=24, f*=30 
-*/
+
 
    %******************
    % ETAT FINAL DU JEU
    %******************
-   
+/*  
 final_state([[a, b,  c],
              [h,vide,d],
              [g, f,  e]]).
+
+*/
+
+%********************
+% ETAT INITIAL DU JEU - Cas 4x4
+%********************   
+/* Cas 1 */ % L'état initial est l'état final.  
+initial4_state1([ [a, b, c, d],
+                [e, f, g, h],
+                [i, j, k, l],
+                [m, n, o, vide]]).
+
+    
+/* Cas 2 */ % Aucun élément n'est à sa place.
+initial4_state2([ [n, g, a, i],
+                [h, vide, b, j],
+                [l, c, o, e], 
+                [d, f, k, m]  ]). 
+
+%******************
+% ETAT FINAL DU JEU - Cas 4x4
+%******************
+final_state([ [a, b, c, d],
+              [e, f, g, h],
+              [i, j, k, l],
+              [m, n, o, vide]]).
+
+
 
    %********************
    % AFFICHAGE D'UN ETAT
@@ -142,7 +170,7 @@ ligne_difference([E1|R1],[E2|R2],Resu) :-
     ligne_difference(R1,R2,Resu_L), Resu is Resu_E+Resu_L.
 
 % element_difference(+E1,+E2,?Resu)
-element_difference(vide,_E2,0).
+element_difference(vide,_E2,0):- !.
 element_difference(E,E,0).
 element_difference(E1,E2,1) :- 
     E1 \= E2, 
