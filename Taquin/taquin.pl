@@ -11,38 +11,42 @@
    %********************
    % ETAT INITIAL DU JEU
    %********************   
-
-initial_state1([ [a, b, c],
+/*
+initial_state([ [a, b, c],
                 [g, h, d],
                 [vide,f,e] ]). % h=2, f*=2
 
 
-initial_state2([ [b, h, c],     % EXEMPLE
+initial_state([ [b, h, c],     % EXEMPLE
                 [a, f, d],     % DU COURS
                 [g,vide,e] ]). % h=5 = f* = 5actions
 
 
-initial_state3([ [b, c, d],
+initial_state([ [b, c, d],
                 [a,vide,g],
                 [f, h, e]  ]). % h=10 f*=10
 			
-initial_state4([ [f, g, a],
+initial_state([ [f, g, a],
                 [h,vide,b],
                 [d, c, e]  ]). % h=16, f*=20
 			
-initial_state5([ [e, f, g],
+initial_state([ [e, f, g],
                 [d,vide,h],
                 [c, b, a]  ]). % h=24, f*=30 
 
+*/
+initial_state([[a, b,  c],
+             [h,vide,d],
+             [g, f,  e]]).
 
    %******************
    % ETAT FINAL DU JEU
    %******************
- /*
+
 final_state([[a, b,  c],
              [h,vide,d],
              [g, f,  e]]).
-*/
+
 
 
 %********************
@@ -64,11 +68,11 @@ initial4_state2([ [n, g, a, i],
 %******************
 % ETAT FINAL DU JEU - Cas 4x4
 %******************
-final_state([ [a, b, c, d],
+/*final_state([ [a, b, c, d],
               [e, f, g, h],
               [i, j, k, l],
               [m, n, o, vide]]).
-
+*/
 
 
    %********************
@@ -143,8 +147,8 @@ delete(N,X,[Y|L], [Y|R]) :-
    %**********************************
    
 heuristique(U,H) :-
- %  heuristique1(U, H).  % choisir l'heuristique 
-   heuristique2(U, H).  % utilisee ( 1 ou 2)  
+   heuristique1(U, H).  % choisir l'heuristique 
+ %  heuristique2(U, H).  % utilisee ( 1 ou 2)  
    
    %****************
    %HEURISTIQUE no 1

@@ -72,7 +72,7 @@ aetoile(Pf,Pu,Q) :-
 	final_state(U),
 	suppress([U, L, Pere, Action], Pu, _),
 	writeln("Affichage des étapes de la solution :"),
-	affiche_solution(Q, [U,L,Pere,Action]).
+	affiche_solution(Q, [U,L,Pere,Action]),!.
 
 % cas général
 aetoile(Pf, Pu, Q) :- 
