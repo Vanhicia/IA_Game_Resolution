@@ -58,7 +58,8 @@ A FAIRE : ECRIRE ici les clauses de negamax/5
 	*/
 
 /* Cas 1 : la profondeur maximale est atteinte */
-negamax(J, Etat, P, P, [nil, H]) :- heuristique(J,Etat,H), !. 
+negamax(J, Etat, P, P, [nil, H]) :- 
+	heuristique(J,Etat,H), !. 
 
 /* Cas 2 : le plateau est rempli */
 negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
@@ -68,13 +69,13 @@ negamax(J, Etat, _P, _Pmax, [nil, H]) :-
 /* Le joueur J a gagné */
 negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
 	alignement(Alig,Etat),
-   	alignement_gagnant(Alig,J),
+	alignement_gagnant(Alig,J),
 	heuristique(J,Etat,H), !.
 
 /* Le joueur J a perdu */
 negamax(J, Etat, _P, _Pmax, [nil, H]) :- 
 	alignement(Alig,Etat),
-   	alignement_perdant(Alig,J),
+	alignement_perdant(Alig,J),
 	heuristique(J,Etat,H), !.
 
 /* Cas 3 : la profondeur maximale n'est pas atteinte et le joueur J peut jouer*/
@@ -116,10 +117,10 @@ successeurs(J,Etat,Succ) :-
 
 loop_negamax(_,_, _  ,[],                []).
 loop_negamax(J,P,Pmax,[[Coup,Suiv]|Succ],[[Coup,Vsuiv]|Reste_Couples]) :- 
-	loop_negamax(J,P,Pmax,Succ,Reste_Couples),  %On continue à chercher les coups possibles (même profondeur) 
-	adversaire(J,A), %On recupère l'adversaire
-	Pnew is P+1, % On incrémente la profondeur, le nombre de tours.
-	negamax(A,Suiv,Pnew,Pmax, [_,Vsuiv]). % On développe la branche du coup à partir de la valeur Vsuiv.  
+	loop_negamax(J,P,Pmax,Succ,Reste_Couples),  % On boucle : recherche des valeurs pour les coups restants
+	adversaire(J,A), % On recupère l'adversaire
+	Pnew is P+1, % On incrémente la profondeur, ie le nombre de tours anticipés.
+	negamax(A,Suiv,Pnew,Pmax, [_,Vsuiv]). % On recherche la meilleure valeur (Vsuiv) pour tous les coups jouables par l'adversaire depuis la situation Suiv
 
 	/*
 
@@ -145,6 +146,7 @@ A FAIRE : commenter chaque litteral de la 2eme clause de loop_negamax/5,
 
 A FAIRE : ECRIRE ici les clauses de meilleur/2
 	*/
+
 meilleur([[C,V]],[C,V]):- !. 
 
 meilleur([[CX,VX] | Liste_de_Couples], [CX, VX]):- 
