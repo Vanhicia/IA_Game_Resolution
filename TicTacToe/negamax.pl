@@ -161,44 +161,45 @@ meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):-
 	/******************
   	PROGRAMME PRINCIPAL
   	*******************/
-situation_test1([ [_,_,_],
-                  [_,x,_],
-                  [_,_,_] ]).
 
-situation_test2([ [o,_,_],
-                  [_,x,_],
-                  [_,_,_] ]).
+% situation_test(+Num_test, ?Etat)
 
-situation_test3([ [o,o,_],
-                  [_,x,_],
-                  [_,x,_] ]).
+situation_test(0, I) :- situation_initiale(I).
 
-situation_test4([ [o,o,x],
-                  [_,x,x],
-                  [_,x,o] ]).
+situation_test(1, [ [_,_,_],
+                    [_,x,_],
+                    [_,_,_] ]).
 
-situation_test5([ [o,o,x],
-                  [x,x,o],
-                  [o,o,x] ]).
+situation_test(2, [ [o,_,_],
+                    [_,x,_],
+                    [_,_,_] ]).
+
+situation_test(3, [ [o,o,_],
+                    [_,x,_],
+                    [_,x,_] ]).
+
+situation_test(4, [ [o,o,x],
+                    [_,x,x],
+                    [_,x,o] ]).
+
+situation_test(5, [ [o,o,x],
+                    [x,x,o],
+                    [o,o,x] ]).
 
 % le joueur x a gagné
-situation_test6([ [o,o,_],
-                  [x,x,x],
-                  [_,_,_] ]).
+situation_test(6, [ [o,o,_],
+                    [x,x,x],
+                    [_,_,_] ]).
 
 % le joueur o a gagné
-situation_test7([ [o,o,o],
-                  [x,x,_],
-                  [x,_,_] ]).
+situation_test(7, [ [o,o,o],
+                    [x,x,_],
+                    [x,_,_] ]).
 
-main(Coup,V, Pmax) :- % main(B,V, Pmax)
-	situation_initiale(Etat), 
-	joueur_initial(J),
-	negamax(J, Etat, 0, Pmax, [Coup, V]).    
-
-test(Etat, Coup, V, Pmax) :-
-	joueur_initial(J),
-	negamax(J, Etat, 0, Pmax, [Coup, V]).    % à modifier !! Le joueur n'est pas toujours J
+% test(+Num_test, +J, +Pmax, ?Coup, ?Val)
+test(Num, J, Pmax, Coup, V) :-
+	situation_test(Num, Etat),
+	negamax(J, Etat, 0, Pmax, [Coup, V]). 
 	
 
 	/*
