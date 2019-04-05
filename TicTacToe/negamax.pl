@@ -164,8 +164,6 @@ meilleur([[_CX,VX] | Liste_de_Couples], [CY, VY]):-
 
 % situation_test(+Num_test, ?Etat)
 
-situation_test(0, I) :- situation_initiale(I).
-
 situation_test(1, [ [_,_,_],
                     [_,x,_],
                     [_,_,_] ]).
@@ -183,8 +181,8 @@ situation_test(4, [ [o,o,x],
                     [_,x,_] ]).
 
 situation_test(5, [ [o,o,x],
-                    [_,x,x],
-                    [_,x,o] ]).
+                    [_,x,o],
+                    [_,x,x] ]).
 
 situation_test(6, [ [o,o,x],
                     [x,x,o],
@@ -206,6 +204,12 @@ test(Num, J, Pmax, Coup, V) :-
 	situation_test(Num, Etat),
 	negamax(J, Etat, 0, Pmax, [Coup, V]). 
 	
+% test avec la situation initiale
+% test_init(+Pmax, ?Coup, ?Val)
+test_init(Pmax, Coup, V) :-
+	joueur_initial(J), 
+	situation_initiale(Etat), 
+	negamax(J, Etat, 0, Pmax, [Coup, V]). 
 
 	/*
 A FAIRE :
