@@ -179,22 +179,27 @@ situation_test(3, [ [o,o,_],
                     [_,x,_] ]).
 
 situation_test(4, [ [o,o,x],
+                    [o,x,_],
+                    [_,x,_] ]).
+
+situation_test(5, [ [o,o,x],
                     [_,x,x],
                     [_,x,o] ]).
 
-situation_test(5, [ [o,o,x],
+situation_test(6, [ [o,o,x],
                     [x,x,o],
                     [o,o,x] ]).
 
 % le joueur x a gagné
-situation_test(6, [ [o,o,_],
+situation_test(7, [ [o,o,_],
                     [x,x,x],
                     [_,_,_] ]).
 
 % le joueur o a gagné
-situation_test(7, [ [o,o,o],
+situation_test(8, [ [o,o,o],
                     [x,x,_],
                     [x,_,_] ]).
+
 
 % test(+Num_test, +J, +Pmax, ?Coup, ?Val)
 test(Num, J, Pmax, Coup, V) :-
