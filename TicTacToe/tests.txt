@@ -30,6 +30,40 @@ M=[[x,o,x],[o,_,o],[x,o,x]], heuristique(x,M,H). %H=0
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(x,M,H). %H=2
 M=[[_,o,_],[_,x,_],[_,_,_]], heuristique(o,M,H). %H=-2
 
+
+------
+
+%% Tests pour Negamax
+
+?-test(0,x,2,C,V). % retourne C=[2,2], V=1
+                   % OK car la case du milieu offre la meilleure valeur pour Pmax=2
+
+?-test(1,o,2,C,V). % retourne C=[1,1], V=-3
+                   % OK car jouer dans un coin est le meilleur coup
+
+?-test(2,x,2,C,V). % retourne C=[1,3], V=1
+                   % OK pour Pmax=2
+
+?-test(3,x,2,C,V). % retourne C=[1,3], V=1
+                   % => OK car le joueur x empêche bien le joueur o de gagner
+
+?-test(4,x,2,C,V). % retourne C=[3,1], V=10000
+                   % => OK car x réalise un coup gagnant
+
+?-test(5,o,2,C,V). % retourne C=[3,1], V=0
+                   % => OK car le joueur o empêche bien le joueur x de gagner
+
+?-test(6,o,2,C,V). % retourne C=nil, V=0
+                   % OK car le plateau est rempli et aucun joueur n'a gagné
+
+?-test(7,o,2,C,V). % retourne C=nil, V=-10000
+                   % OK car le joueur o a perdu
+
+?-test(8,x,2,C,V). % retourne C=nil, V=-10000
+                   % OK car le joueur x a perdu
+
+
+
 ------
 
 
